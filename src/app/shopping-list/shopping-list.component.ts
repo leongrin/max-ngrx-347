@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
 
-import { Ingredient } from '../shared/ingredient.model';
-import { LoggingService } from '../logging.service';
+import {Ingredient} from '../shared/ingredient.model';
+import {LoggingService} from '../logging.service';
 import {Store} from '@ngrx/store';
 import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
 import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
@@ -35,6 +35,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   onEditItem(index: number) {
     /*this.slService.startedEditing.next(index);*/
+    console.log(`onEditItem from shoppingListComponent index => ${index}`);
     this.store.dispatch(new ShoppingListActions.StartEdit(index));
   }
 
