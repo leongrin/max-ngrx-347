@@ -75,6 +75,7 @@ export class AuthService {
       _token: string;
       _tokenExpirationDate: string;
     } = JSON.parse(localStorage.getItem('userData'));
+
     if (!userData) {
       return;
     }
@@ -89,7 +90,7 @@ export class AuthService {
     if (loadedUser.token) {
       /*this.user.next(loadedUser);*/
 
-      this.store.dispatch(new AuthActions.Login({
+      this.store.dispatch(new AuthActions.AuthenticateSuccess({
         email: userData.email,
         userId: userData.id,
         token: userData._token,
@@ -105,8 +106,8 @@ export class AuthService {
 
   logout() {
     /*this.user.next(null);*/
-    this.store.dispatch(new AuthActions.Logout());
-    this.router.navigate(['/auth']);
+    /*this.store.dispatch(new AuthActions.Logout());*/
+    /*this.router.navigate(['/auth']);*/
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -129,13 +130,13 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     /*this.user.next(user);*/
-    this.store.dispatch(new AuthActions.Login({email, userId, token, expirationDate}))
+    this.store.dispatch(new AuthActions.AuthenticateSuccess({email, userId, token, expirationDate}))
 
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
-  private handleError(errorRes: HttpErrorResponse) {
+  private static handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (!errorRes.error || !errorRes.error.error) {
       return throwError(errorMessage);

@@ -22,6 +22,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
 
   private closeSub: Subscription;
+  storeSub: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -32,7 +33,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.store.select('auth').subscribe(authState => {
+    this.storeSub = this.store.select('auth').subscribe(authState => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
       if (this.error) {
@@ -55,13 +56,14 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     let authObs: Observable<AuthResponseData>;
 
-    this.isLoading = true;
+    /*this.isLoading = true;*/
 
     if (this.isLoginMode) {
       /*authObs = this.authService.login(email, password);*/
       this.store.dispatch(new AuthActions.LoginStart({email, password}));
     } else {
-      authObs = this.authService.signup(email, password);
+      /*authObs = this.authService.signup(email, password);*/
+      this.store.dispatch(new AuthActions.SignupStart({email, password}));
     }
 
     /*authObs.subscribe(
@@ -82,13 +84,15 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onHandleError() {
-    this.error = null;
+    /*this.error = null;*/
+    this.store.dispatch(new AuthActions.ClearError());
   }
 
   ngOnDestroy() {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
+    this.storeSub.unsubscribe();
   }
 
   private showErrorAlert(message: string) {
