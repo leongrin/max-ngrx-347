@@ -3,7 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {map, tap} from 'rxjs/operators';
 
 import {Recipe} from '../recipes/recipe.model';
-import {RecipeService} from '../recipes/recipe.service';
 import * as fromApp from '../store/app.reducer';
 import * as RecipesActions from '../recipes/store/recipes.actions';
 import {Store} from '@ngrx/store';
@@ -13,7 +12,6 @@ import {Subscription} from 'rxjs';
 export class DataStorageService implements OnDestroy{
   constructor(
     private http: HttpClient,
-    private recipeService: RecipeService,
     private store: Store<fromApp.AppState>
   ) {}
 
