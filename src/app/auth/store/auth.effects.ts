@@ -8,6 +8,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from '../user.model';
 import {AuthService} from '../auth.service';
+import * as RecipesActions from '../../recipes/store/recipes.actions';
 
 
 export interface AuthResponseData {
@@ -96,6 +97,7 @@ export class AuthEffects {
       tap(() => {
         localStorage.removeItem('userData');
         this.authServ.clearLogoutTimer();
+        this.router.navigate(['/auth']);
       })
     );
   }, {dispatch: false})
@@ -148,6 +150,9 @@ export class AuthEffects {
     localStorage.setItem('userData', JSON.stringify(user));
 
     this.authServ.setLogoutTimer(+resData.expiresIn * 1000);
+
+    console.log('Getting ner recipes');
+    new RecipesActions.GetRecipes();
 
     return new AuthActions.AuthenticateSuccess({
       email: resData.email,

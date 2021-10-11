@@ -72,7 +72,6 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
       }
 
     default:
-      console.log('INSIDE default');
       return state
   }
 }

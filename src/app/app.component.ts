@@ -5,6 +5,7 @@ import { LoggingService } from './logging.service';
 import {Store} from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
 import * as AuthActions from './auth/store/auth.actions'
+import * as RecipesActions from './recipes/store/recipes.actions';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     /*this.authService.autoLogin();*/
     this.store.dispatch(new AuthActions.AutoLogin());
-    this.loggingService.printLog('Hello from AppComponent ngOnInit');
+    this.store.dispatch(new RecipesActions.GetRecipes());
   }
 }
